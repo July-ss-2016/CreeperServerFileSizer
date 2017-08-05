@@ -8,16 +8,16 @@ import java.nio.channels.FileChannel;
  */
 public class Util {
 
-    public static boolean copy(final String SOURCE_FILE_PATH, final String DEST_FILE_PATH) throws IOException{
-        File srcFile = new File(SOURCE_FILE_PATH);
+    public static boolean copy(final String sourceFilePath, final String destFilePath) throws IOException{
+        File srcFile = new File(sourceFilePath);
 
         if (srcFile.isDirectory()) {
             File[] srcFiles = srcFile.listFiles();
 
             for (int i = 0; i < srcFiles.length; i++) {
-                String newPath = SOURCE_FILE_PATH + File.separator + srcFiles[i].getName();
-                String newCopyPath = DEST_FILE_PATH + File.separator + srcFiles[i].getName();
-                File newFile = new File(DEST_FILE_PATH);
+                String newPath = sourceFilePath + File.separator + srcFiles[i].getName();
+                String newCopyPath = destFilePath + File.separator + srcFiles[i].getName();
+                File newFile = new File(destFilePath);
 
                 if(!newFile.exists()) {
                     newFile.mkdirs();
@@ -28,23 +28,9 @@ public class Util {
 
         } else if (srcFile.isFile()) {
 
-            FileChannel inputChannel = new FileInputStream(SOURCE_FILE_PATH).getChannel();
-            FileChannel outputChannel = new FileOutputStream(DEST_FILE_PATH).getChannel();
+            FileChannel inputChannel = new FileInputStream(sourceFilePath).getChannel();
+            FileChannel outputChannel = new FileOutputStream(destFilePath).getChannel();
             outputChannel.transferFrom(inputChannel, 0, inputChannel.size());
-
-            /*
-            DataInputStream readStream= new DataInputStream(new BufferedInputStream(new FileInputStream(SOURCE_FILE_PATH)));
-            DataOutputStream outputStream = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(DEST_FILE_PATH)));
-            byte [] buf = new byte[1024];
-            int len;
-
-            while ((len = readStream.read(buf)) != -1) {
-                outputStream.write(buf, 0, len);
-            }
-
-            readStream.close();
-            outputStream.close();
-            */
         } else {
             return false;
         }
